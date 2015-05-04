@@ -9,14 +9,18 @@
 % für korrkte Umlaute
 \usepackage[utf8]{inputenc}
 
+% für Umlaute
+% \usepackage[T1]{fontenc}\usepackage{lmodern}
+
+
 % für korrekte mathematische Zeichen
 \usepackage{amsfonts}
 
-% für deutschen Zeilenumbruch
+% für deutsche Silbentrennung
 \usepackage[ngerman]{babel}
 
-% für Umlaute
-\usepackage[T1]{fontenc}\usepackage{lmodern}
+% deutsche anführungen
+\usepackage[autostyle]{csquotes}
 
 %%% Used by the ``review'' variation; the online ID will be printed on 
 %%% every page of the content.
@@ -30,8 +34,8 @@
 
 \title{Digitale Bilder}
 
-\author{Reguieg, Ibrahim Khaled\thanks{e-mail: Khaled.Reguieg@gmail.com}
-\and Döring, Jules\thanks{e-mail: Jules.Doering@gmx.de}}
+\author{Reguieg, Ibrahim Khaled
+\and Döring, Jules}
 \pdfauthor{Reguieg, Döring}
 
 \keywords{Digitale Bilder, Bildverarbeitung, CG1 }
@@ -42,7 +46,7 @@
 %%% the title and author information, and above the body of the content.
 
  \teaser{
-   \includegraphics[width=7in, trim=10mm 10mm 8mm 60mm, clip=true]{images/Jeffrey_Smith_Flikr_CC-BY-ND-2-0.jpg}
+   \includegraphics[width=7in, trim=13mm 30mm 8mm 100mm, clip=true]{images/Jeffrey_Smith_Flikr_CC-BY-ND-2-0.jpg}
    \caption{\href{https://www.flickr.com/photos/jmsmith000/3097202394}{Jeffrey Smith 2008 }}
  }
 
@@ -50,39 +54,38 @@
 
 
 
-\section{Vorwort}
+\begin{abstract}
 In der Realität werden Bilder durch reflektiertes Licht erzeugt.
 Das führt zu den folgenden Fragestellungen:
 
-"Wie stellen wir Farben und Bilder am Computer dar?"
+"`Wie stellen wir Farben und Bilder am Computer dar?\,"'
 
+"`Wie werden Bilder im Computer repräsentiert?\,"'
 
-"Wie werden Bilder im Computer repräsentiert?"
-
-Hier soll ein Weg hergeleitet werden, diese in einer Form zu abstrahieren, mit der Computerprogramme effizient arbeiten können.
+Hier soll ein Weg hergeleitet werden, Bilder in einer Form zu abstrahieren, mit der Computerprogramme effizient arbeiten können.
 \end{abstract}
 
 \section{Was ist ein Bild?}
 
-\subsection{Mathematische Repräsentation:}
-Am besten dafür eignet sich die folgende stetige mathematische Funktion,die die Menge der Koordinaten R auf die Menge der Farben V abbildet:
+\subsection{Formal Mathematisch}
+Am besten dafür eignet sich die folgende stetige mathematische Funktion, die die Menge der Koordinaten R auf die Menge der Farben V abbildet:
 \begin{equation}I(x,y): R \rightarrow V\end{equation}
 \begin{equation}R\subset \mathbb{R}^2\end{equation}
 \begin{equation}V = \mathbb{R}^+ \: Graustufenbild\end{equation}
 \begin{equation}V = \left (\mathbb{R}^+  \right )^3 \: Farbbild\end{equation}
 
 
-Diese Art der Modellierung ist unnötig komplex. Da durch die biologischen Einschrängkungen denen die menschliche Wahrnehmung unterliegt einige Punkte wegfallen. Diese kann man zur Simplifizierung des Modells nutzen.
-Zum Beispiel gilt: Je weiter ein Objekt entfernt ist, um so kleiner ist die Abbildung auf unserer Netzhaut. Da das Licht von verschiedenen Punkten des gesehenen Objekts auf den gleichen Punkt auf der Netzhaut projeziert wird. Somit hat das menschliche Auge keine Chance mehr die Unterschiede zwischen nahegelegenen Punkten wahrzunehmen.
-Beim Druck findet dieses Begebenheit auch Anwendung, beispielsweise druckt der Druckkopf ganz kleine Muster, um aus Gelb und Magenta Rot oder Orange zu mischen.
+Diese Art der Modellierung ist unnötig genau. Durch die biologischen und psychologischen Einschränkungen, denen die menschliche Wahrnehmung unterliegt, findet eine sehr viel gröbere Abtastung statt. Diese kann man zur Vereinfachung des Modells nutzen.
 
+\subsection{Wahrnehmung bei Menschen}
+Je weiter ein Objekt entfernt ist, um so kleiner ist die Abbildung auf die Stäbchen und Zapfen unserer Netzhaut. Da das Licht von mehreren Punkten des gesehenen Objekts auf einen Punkt auf der Netzhaut projiziert wird. Somit hat das menschliche Auge keine Chance mehr die Unterschiede zwischen nahegelegenen Punkten wahrzunehmen.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=0.75in]{images/AugeObjektNah}
+  \includegraphics[width=.75in]{images/AugeObjektNah}
   \includegraphics[width=0.5in]{images/SinneszelleObjektNah}
   \includegraphics[width=0.5in]{images/AbbildungAufSinneszelleObjektNah}
-  \caption{Objekt nah am Auge. 'Skript Rehfeld - Digitale Bilder'}
+  \caption{Objekt nah am Auge. \\'Skript Rehfeld - Digitale Bilder'}
   \label{fig:Objekt nah am Auge}
 \end{figure}
 
@@ -91,27 +94,28 @@ Beim Druck findet dieses Begebenheit auch Anwendung, beispielsweise druckt der D
   \includegraphics[width=1.5in]{images/AugeObjektFern}
   \includegraphics[width=0.5in]{images/SinneszelleObjektFern}
   \includegraphics[width=0.55in]{images/AbbildungAufSinneszelleObjektFern}
-  \caption{Objekt fern vom Auge. 'Skript Rehfeld - Digitale Bilder'}
+  \caption{Objekt fern vom Auge. \\'Skript Rehfeld - Digitale Bilder'}
   \label{fig:Objekt fern vom Auge}
 \end{figure}
+
+Auch beim Druck findet dieses Begebenheit Anwendung, beispielsweise druckt der Druckkopf ganz kleine Muster, um aus Gelb und Magenta Rot oder Orange zu mischen.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.5in]{images/gelbMagentaMusterGrob}
   \includegraphics[width=0.5in]{images/gelbMagentaMusterFeiner}
   \includegraphics[width=0.5in]{images/gelbMagentaMusterFein}
-  \caption{Farben mischen aus CMYK. 'Skript Rehfeld - Digitale Bilder'}
+  \caption{Farben mischen aus CMYK. \\'Skript Rehfeld - Digitale Bilder'}
   \label{fig:Aus Grundfarben wird neue eine Farbe}
 \end{figure}
 
 Ähnlich verhält es sich bei Bildschirmen, denn die mangelnde örtliche Auflösung führt zum Eindruck eines stetigen Bildes, wobei die Signale des Bildschirms eigentlich diskret sind.
 
-\section{Technische Umsetzung}
-Die Modellierung des Bildgitters wird durch einen zweidimensionalen byte Array dargestellt.
-
-Mithilfe dessen nun jeder Subpixel bearbeitet werden kann, indem wir mit zwei geschachtelten For-Schleifen über die Koordinaten iterieren und dort die RGB-Farbwerte setzen.
+\section{Umsetzung für Computer}
+Naheliegend ist es, ein Bildgitter durch einen zweidimensionalen \textit{byte} Array pro Farbkanal darzustellen.
+Nun kann jeder Subpixel bearbeitet werden, indem wir mit zwei geschachtelten For-Schleifen über die Koordinaten iterieren und dort die RGB-Farbwerte setzen.
 \begin{lstlisting}[language=Java]
-final byte[][] pic = new byte [640][480][3];
+final byte[][]pic = new byte[640][480][3];
 
 for (int x = 0; x < width; ++x){
   for (int y = 0; y < height; ++y){
@@ -122,51 +126,51 @@ for (int x = 0; x < width; ++x){
   }
 \end{lstlisting}
 
-Überlegungen in Hardware-naher Programmierung: Arrays sind quasi wie Pointer in C.
+\subsection{Optimierung für CPU Caching}
 
-Der SRAM ist ein transistorbasierter Speicher, er bietet mehr Platz \rightarrow er\:ist\:teuer\:aber\:schnell
+SRAM $\rightarrow$ ist \textit{teuer} aber \textit{schnell} \\
+DRAM $\rightarrow$ ist \textit{günstig} aber \textit{langsam}
 
-Der DRAM ist ein kondensatorbasierter Speicher, er bietet weniger Platz \rightarrow er\:ist\:günstig\:aber\:langsam
-
-Deswegen befinden sich schnelle kleine Speicher auf der CPU die als  Caches benutzt werden.
-Modernen CPUs haben üblicherweise drei Cache-Level mit denen man versucht die Cache Misses zu minimieren.
+Auf der CPU befinden sich schnelle kleine SRAM basierte Speicher die als Caches benutzt werden. Cachecontroller versuchen zu errechnen auf welche Speicheradressen als nächstes zugegriffen wird und laden die Daten präventiv ins schnellere Cache. Dadurch muss die CPU seltener warten bis Daten aus dem langsamen Hauptspeicher auf DRAM Basis geladen sind.
+Modernen CPUs haben üblicherweise drei Cache-Level mit denen man versucht die \textit{Cache Misses} zu minimieren.
 
 {\small\url{http://lwn.net/Articles/250967/}}
 
-
-Die Modellierung eines Graustufenbildes geschieht als eindemensionales Array, um die Cacheprediction besser auszunutzen wird das Bild bzw. die Bildinformation zeilenweise hintereinander gelegt.
+\subsection{Graustufenbild}
+Um \textit{Cacheprediction} besser aus zu nutzen ist es also sinnvoll, Daten hintereinander abzulegen. Der folgende Code ist ein Beispiel für ein Graustufenbild als eindimensionales Array.
 
 \begin{lstlisting}[language=Java]
 final byte[][] pic = new byte [640 * 480];
 
 for (int x = 0; x < width; ++x) {
-	for (int y = 0; y < height; ++y) {
-		byte g = pic [y * width +x];
-	}
+  for (int y = 0; y < height; ++y) {
+    byte g = pic [y * width +x];
+  }
 }
 \end{lstlisting}
 
-Die Modellierung eines Farbbildes geschieht als eindemensionales Array vom Typ Byte.
-In diesen wird das Bild zeilenweise hintereinander gelegt und nach Farbkanälen getrennt.
+\subsection{Farbbild mit separierten Kanälen}
+Ähnlich kann man ein Farbbild modellieren, indem man die Farbkanäle einen nach dem anderen ablegt.
 
 \begin{lstlisting}[language=Java]
 final byte[][] pic = new byte [640 * 480 * 3];
 SomeImageLoader.loadInto(pic);
 for (int x = 0; x < width; ++x) {
   for (int y = 0; y < height; ++y) {
-	final byte red = pic[ 0 * width * 
-		height + y * width + x ];
+    final byte red = pic[0 * width * height
+    + y * width + x ];
+    
+    final byte green = pic[1 * width * height 
+    + y * width + x ];
 
-	final byte green = pic[ 1 * width * 
-		height + y * width + x ];
-
-	final byte blue = pic[ 2 * width * 
-		height + y * width + x ];
+    final byte blue = pic[2 * width * height
+    + y * width + x ];
     }
   }
 \end{lstlisting}
 
-bei der Modellierung eines Farbbildes als eindemensionales Array vom Typ Byte wird das Bild zeilenweise in je 3 aufeinander folgende Subpixel gestückelt und hintereinander gelegt.
+\subsection{Farbbild Pixelweise}
+Eine weitere Möglichkeit besteht darin, jeden Pixel durch 3 aufeinander folgende Subpixel darzustellen.
 
 \begin{lstlisting}[language=Java]
 final byte[][] pic = new byte [640 * 480 * 3];
@@ -180,14 +184,33 @@ for (int x = 0; x < width; ++x){
   }
 \end{lstlisting}
 
-Die häufigste Darstellung ist allerdings die pixelweise Darstellung in einem Array vom Typ Integer.
-Dabei sollte man das Prinzip des "Data structure alignment" beachten, das die Shiftoperationen ausnutzt, da sie der Arbeitsweise von CPU mit dem  Speicher ähnelt. Dies erhöht die Perfomanz. 
-
+\subsection{Farbbild Pixelweise als integer}
+Die häufigste Darstellung ist allerdings die pixelweise Darstellung in einem Array vom Typ Integer, da sie mehrere Vorteile in sich vereint. Die Performanz wird einerseits durch \textit{Data structure alignment} auf Speicherseite und andererseits durch Ausnutzen hochperformanter Shiftoperationen für Subpixelzugriffe gewährleistet. Zudem erhält man für Menschen verhältnismäßig gut interpretierbare Werte.
 
 {\small\url{http://en.wikipedia.org/wiki/Data_structure_alignment}}
 
+Der Zugriff auf Subpixel findet mittels Bitmasken und Shiftoperationen statt.
 
-Bei der pixelweisen Darstellung in einem Array vom Typ Integer benutzt man Shiftoperationen und maskierrt die Speicherbereiche für den Zugriff auf die Subpixel. Das folgende Bild zeigt diese Struktur:
+\begin{lstlisting}[language=Java]
+final int height = 480;
+final int width = 640;
+final int[] pic = new int[height * width ];
+SomeImageLoader.loadInto( pic );
+for(int y = 0; y < height; ++y ) {
+  for(int x = 0; x < width; ++x ) {
+    int red = (pic[ y * width + x ] &
+    0xff0000) >> 16;
+    int green = (pic[ y * width + x ] &
+    0xff00) >> 8;
+    int blue = pic[ y * width + x ] & 0xff;
+
+    pic[y * width + x ] = 
+    ((red & 0xff) << 16) | 
+    ((green & 0xff) << 8) | 
+    (blue & 0xff);
+  }
+}
+\end{lstlisting}
 
 \begin{figure}[ht]
   \centering
@@ -195,28 +218,6 @@ Bei der pixelweisen Darstellung in einem Array vom Typ Integer benutzt man Shift
   \caption{Farbbild in pixelweiser Darstellung im Integer Array. 'Skript Rehfeld - Digitale Bilder'}
   \label{fig:Pixelweise Darstellung im Array.}
 \end{figure}
-
-\begin{lstlisting}[language=Java]
-final int height = 480;
-final int width = 640;
-final int[] pic = new int[height * width ];
-SomeImageLoader.loadInto( pic );
-for( int y = 0; y < height; ++y ) {
-	for( int x = 0; x < width; ++x ) {
-	    int red = (pic[ y * width + x ] &
- 	    0xff0000) >> 16;
-	    int green = (pic[ y * width + x ] &
- 	    0xff00) >> 8;
-	    int blue = pic[ y * width + x ] & 0xff;
-
-	    pic[y * width + x ] = 
-	    ((red & 0xff) << 16) | 
-	    ((green & 0xff) << 8) | 
-	    (blue & 0xff);
-	}
-}
-\end{lstlisting}
-
 
 
 \section{Koordinatensystem}
@@ -237,6 +238,7 @@ In der Bildverarbeitung hingegen beginnt es gemäß der Leserichtung der westlic
   \caption{Bilder in der Bildverarbeitung. 'Skript Rehfeld - Digitale Bilder'}
   \label{fig:Koordinatenursprung oben links}
 \end{figure}
+
 
 \bibliographystyle{acmsiggraph}
 \nocite{*}
