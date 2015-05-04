@@ -6,6 +6,18 @@
 % für hyperlinks http://en.wikibooks.org/wiki/LaTeX/Hyperlinks
 \usepackage{hyperref}
 
+% für korrkte Umlaute
+\usepackage[utf8]{inputenc}
+
+% für korrekte mathematische Zeichen
+\usepackage{amsfonts}
+
+% für deutschen Zeilenumbruch
+\usepackage[ngerman]{babel}
+
+% für Umlaute
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+
 %%% Used by the ``review'' variation; the online ID will be printed on 
 %%% every page of the content.
 
@@ -18,11 +30,11 @@
 
 \title{Digitale Bilder}
 
-\author{Reguien, Ibrahim Khaled\thanks{e-mail:TODO@XXXXXXXXXXX}
-\and Döring, Jules\thanks{e-mail:Jules.Doering@gmx.de}}
-\pdfauthor{Reguien, Döring}
+\author{Reguieg, Ibrahim Khaled\thanks{e-mail: Khaled.Reguieg@gmail.com}
+\and Döring, Jules\thanks{e-mail: Jules.Doering@gmx.de}}
+\pdfauthor{Reguieg, Döring}
 
-\keywords{digitale bilder, bildverarbeitung, cg1 }
+\keywords{Digitale Bilder, Bildverarbeitung, CG1 }
 
 \begin{document}
 
@@ -38,33 +50,71 @@
 
 
 
-\begin{abstract}
-In der Realität werden Bilder durch reflektiertes Licht erzeugt...
-Abbildungen in der Realen Welt sind... TODO
+\section{Vorwort}
+In der Realität werden Bilder durch reflektiertes Licht erzeugt.
+Das führt zu den folgenden Fragestellungen:
+
+"Wie stellen wir Farben und Bilder am Computer dar?"
+
+
+"Wie werden Bilder im Computer repräsentiert?"
+
 Hier soll ein Weg hergeleitet werden, diese in einer Form zu abstrahieren, mit der Computerprogramme effizient arbeiten können.
 \end{abstract}
 
 \section{Was ist ein Bild?}
 
-\subsection{Mathematische repräsentation:}
-Funktion die aus der menge der koordinaten R auf die menge der farben V abbildet
-I(x,y):R ->V | R element der Reellen zahlen
+\subsection{Mathematische Repräsentation:}
+Am besten dafür eignet sich die folgende stetige mathematische Funktion,die die Menge der Koordinaten R auf die Menge der Farben V abbildet:
+\begin{equation}I(x,y): R \rightarrow V\end{equation}
+\begin{equation}R\subset \mathbb{R}^2\end{equation}
+\begin{equation}V = \mathbb{R}^+ \: Graustufenbild\end{equation}
+\begin{equation}V = \left (\mathbb{R}^+  \right )^3 \: Farbbild\end{equation}
 
-Diese art der Modellierung ist unnötig koplex. Durch Biologischen einschrängkungen denen die menschliche wahrnehmung unterliegt bestehen einschränkungen. Diese kann man zur simplifizierung des Modells nutzen.
-Jeh weiter ein Objekt weg ist, um so kleiner ist die abbildung auf unserer netzhaut. Da das licht von verschiedenen Punkten des gesehenen Objekt auf den gleichen punkt auf der Netzhaut abbildet. Somit können die Unterschiede zwischen nahegelegenen Punkten nichtmehr wahrgenommen werden. (Beispiel Druckraster / Bildschirm subpixel)
 
-mangelnden örtliche auflösung des Auges erlaubt es bilder Diskret darzustelllen dadurch entsteht der eindruck eines stetigen bildes.
+Diese Art der Modellierung ist unnötig komplex. Da durch die biologischen Einschrängkungen denen die menschliche Wahrnehmung unterliegt einige Punkte wegfallen. Diese kann man zur Simplifizierung des Modells nutzen.
+Zum Beispiel gilt: Je weiter ein Objekt entfernt ist, um so kleiner ist die Abbildung auf unserer Netzhaut. Da das Licht von verschiedenen Punkten des gesehenen Objekts auf den gleichen Punkt auf der Netzhaut projeziert wird. Somit hat das menschliche Auge keine Chance mehr die Unterschiede zwischen nahegelegenen Punkten wahrzunehmen.
+Beim Druck findet dieses Begebenheit auch Anwendung, beispielsweise druckt der Druckkopf ganz kleine Muster, um aus Gelb und Magenta Rot oder Orange zu mischen.
+
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.75in]{images/AugeObjektNah}
+  \includegraphics[width=0.5in]{images/SinneszelleObjektNah}
+  \includegraphics[width=0.5in]{images/AbbildungAufSinneszelleObjektNah}
+  \caption{Objekt nah am Auge. 'Skript Rehfeld - Digitale Bilder'}
+  \label{fig:Objekt nah am Auge}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=1.5in]{images/AugeObjektFern}
+  \includegraphics[width=0.5in]{images/SinneszelleObjektFern}
+  \includegraphics[width=0.55in]{images/AbbildungAufSinneszelleObjektFern}
+  \caption{Objekt fern vom Auge. 'Skript Rehfeld - Digitale Bilder'}
+  \label{fig:Objekt fern vom Auge}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.5in]{images/gelbMagentaMusterGrob}
+  \includegraphics[width=0.5in]{images/gelbMagentaMusterFeiner}
+  \includegraphics[width=0.5in]{images/gelbMagentaMusterFein}
+  \caption{Farben mischen aus CMYK. 'Skript Rehfeld - Digitale Bilder'}
+  \label{fig:Aus Grundfarben wird neue eine Farbe}
+\end{figure}
+
+Ähnlich verhält es sich bei Bildschirmen, denn die mangelnde örtliche Auflösung führt zum Eindruck eines stetigen Bildes, wobei die Signale des Bildschirms eigentlich diskret sind.
 
 \section{Technische Umsetzung}
-Modellierung durch 2 dimensionales byte array
+Die Modellierung des Bildgitters wird durch einen zweidimensionalen byte Array dargestellt.
 
-bearbeitung jedes subpixels durch 2 geschachtelte for schleifen
-
+Mithilfe dessen nun jeder Subpixel bearbeitet werden kann, indem wir mit zwei geschachtelten For-Schleifen über die Koordinaten iterieren und dort die RGB-Farbwerte setzen.
 \begin{lstlisting}[language=Java]
 final byte[][] pic = new byte [640][480][3];
 
 for (int x = 0; x < width; ++x){
-  for (int y = 0 < height; ++y){
+  for (int y = 0; y < height; ++y){
     byte r = pic [x][y][0];
     byte g = pic [x][y][1];
     byte b = pic [x][y][2];
@@ -72,50 +122,57 @@ for (int x = 0; x < width; ++x){
   }
 \end{lstlisting}
 
-überlegung in hardware naher programmierung: Arrays sind quasie wie Pointer
+Überlegungen in Hardware-naher Programmierung: Arrays sind quasi wie Pointer in C.
 
-SRAM Transistor basierter speicher mehr platz -> teuer aber schnell
-DRAM kondensator basierter speicher weniger platz -> günstig aber lahm
-Deswegen schneller kleiner speicher auf der CPU die Caches.
-Man verucht die Cachmisses zu minimieren.
-http://lwn.net/Articles/250967/
+Der SRAM ist ein transistorbasierter Speicher, er bietet mehr Platz \rightarrow er\:ist\:teuer\:aber\:schnell
 
-Modellierung eines graustufenbildes als eindemensionales array um Cacheprediction besser auszunutzen
-werden wird das Bild zeilenweise hintereinander gelegt.
+Der DRAM ist ein kondensatorbasierter Speicher, er bietet weniger Platz \rightarrow er\:ist\:günstig\:aber\:langsam
+
+Deswegen befinden sich schnelle kleine Speicher auf der CPU die als  Caches benutzt werden.
+Modernen CPUs haben üblicherweise drei Cache-Level mit denen man versucht die Cache Misses zu minimieren.
+
+{\small\url{http://lwn.net/Articles/250967/}}
+
+
+Die Modellierung eines Graustufenbildes geschieht als eindemensionales Array, um die Cacheprediction besser auszunutzen wird das Bild bzw. die Bildinformation zeilenweise hintereinander gelegt.
 
 \begin{lstlisting}[language=Java]
 final byte[][] pic = new byte [640 * 480];
 
-for (int x = 0; x < width; ++x){
-  for (int y = 0 < height; ++y){
-    byte g = pic [y * width +x];
+for (int x = 0; x < width; ++x) {
+	for (int y = 0; y < height; ++y) {
+		byte g = pic [y * width +x];
+	}
+}
+\end{lstlisting}
+
+Die Modellierung eines Farbbildes geschieht als eindemensionales Array vom Typ Byte.
+In diesen wird das Bild zeilenweise hintereinander gelegt und nach Farbkanälen getrennt.
+
+\begin{lstlisting}[language=Java]
+final byte[][] pic = new byte [640 * 480 * 3];
+SomeImageLoader.loadInto(pic);
+for (int x = 0; x < width; ++x) {
+  for (int y = 0; y < height; ++y) {
+	final byte red = pic[ 0 * width * 
+		height + y * width + x ];
+
+	final byte green = pic[ 1 * width * 
+		height + y * width + x ];
+
+	final byte blue = pic[ 2 * width * 
+		height + y * width + x ];
     }
   }
 \end{lstlisting}
 
-Modellierung eines farbbildes als eindemensionales array
-werden wird das Bild zeilenweise hintereinander gelegt und nach Farbkanälen getrennt. 
+bei der Modellierung eines Farbbildes als eindemensionales Array vom Typ Byte wird das Bild zeilenweise in je 3 aufeinander folgende Subpixel gestückelt und hintereinander gelegt.
 
 \begin{lstlisting}[language=Java]
 final byte[][] pic = new byte [640 * 480 * 3];
 
 for (int x = 0; x < width; ++x){
-  for (int y = 0 < height; ++y){
-    byte r = pic [0* height* width]; // nochmal nachschaun da fehlt definifv noch was :P
-    byte g = pic [0* height* width];
-    byte b = pic [0* height* width];
-    }
-  }
-\end{lstlisting}
-
-Modellierung eines farbbildes als eindemensionales array
-werden wird das Bild zeilenweise hintereinander gelegt jeh 3 subpixel nebeneinander
-
-\begin{lstlisting}[language=Java]
-final byte[][] pic = new byte [640 * 480 * 3];
-
-for (int x = 0; x < width; ++x){
-  for (int y = 0 < height; ++y){
+  for (int y = 0 ; y < height; ++y){
     byte r = pic [y * width *3 + x*3 +0]; 
     byte g = pic [y * width *3 + x*3 +3];
     byte b = pic [y * width *3 + x*3 +2];
@@ -123,301 +180,63 @@ for (int x = 0; x < width; ++x){
   }
 \end{lstlisting}
 
-Häufigste Darstellung ist Pixelweise Integer
-Memoryalignment
-http://en.wikipedia.org/wiki/Data\_structure\_alignment
-
-shiften und maskieren für zugriff auf subpixel
+Die häufigste Darstellung ist allerdings die pixelweise Darstellung in einem Array vom Typ Integer.
+Dabei sollte man das Prinzip des "Data structure alignment" beachten, das die Shiftoperationen ausnutzt, da sie der Arbeitsweise von CPU mit dem  Speicher ähnelt. Dies erhöht die Perfomanz. 
 
 
-
-Koordinaten system
-Das in der Bildverarbeitung übliche Koordinaten system beginnt oben rechts und geht nach unten links. Während es in der Computergrafik, wie auch Matematik von unten links nach oben rechts geht.
+{\small\url{http://en.wikipedia.org/wiki/Data_structure_alignment}}
 
 
-
-
-
-\begin{abstract}
-
-In this sample paper, we describe the formatting requirements for
-content accepted to SIGGRAPH-sponsored events. The same format can be
-used for content ranging from a one-page Poster or Talk abstract, to a
-full-length Technical Paper. Please review this document even if you
-have submitted content to a SIGGRAPH-sponsored event in the past, as
-some of the details have changed relative to previous years.
-
-\end{abstract}
-
-\begin{CRcatlist}
-  \CRcat{I.3.3}{Computer Graphics}{Three-Dimensional Graphics and Realism}{Display Algorithms}
-  \CRcat{I.3.7}{Computer Graphics}{Three-Dimensional Graphics and Realism}{Radiosity};
-\end{CRcatlist}
-
-\keywordlist
-
-%% Required for all content. 
-
-\copyrightspace
-
-\section{The Basics: General Organization}
-
-Your content should have the following elements, in this order:
-\begin{itemize}
-\item title, author, and affiliation information
-\item abstract
-\item CR categories *
-\item keywords *
-\item body of the content
-\item bibliography
-\end{itemize}
-
-CR categories and keywords are required for Technical Papers and
-Technical Briefs, and optional for all other types of content. The
-\LaTeX{} and Word templates faithfully implement the formatting
-specifications in this document, and the sample PDF documents can be
-used as visual examples for organization and layout.
-
-\section{The Basics: Page Size and Columns}
-
-Your content should be formatted on a US Letter (8.5 inches wide by 11
-inches tall) page size. Please make sure you.re not working on an A4
-page size. Page margins should be set at 0.75 inches on the right,
-left, and top, and one inch at the bottom. Two columns should be used
-throughout your content, except for the title, affiliations, and large
-images or tables which span both columns.
-
-To summarize, here are the basic page specifications: 
-\begin{itemize}
-\item page size: 8.5 inches wide by 11 inches wide (not A4)
-\item top margin: 0.75 inches
-\item right margin: 0.75 inches
-\item left margin: 0.75 inches
-\item bottom margin: 1 inch
-\item number of columns: 2
-\item column width: 3.3 inches
-\item column height: 9.25 inches
-\item column gutter: 0.33 inches
-\end{itemize}
-
-\section{The Basics: Typefaces, Paragraphs, and Line Spacing}
-
-Please use a serif (Times, Times New Roman, etc.) typeface for the
-body of your content. This serif typeface should be used for
-everything except the title of your content and section headings,
-which should be set in a sans-serif (Helvetica, etc.) typeface.
-
-Your content should be prepared with 9-point text and 10-point line
-spacing. This includes the references section. Do not reduce the
-typeface size or the line spacing of any part of your content, in an
-effort to fit more into a specific number of pages. 
-
-All typefaces used in your content must be embedded in the PDF you
-create. 
-
-Paragraphs are prepared without any indentation on the first line, and
-with a 10-point-tall space between paragraphs.
-
-Please do not add page numbers to your content. They will be added
-during production.
-
-\section{The Basics: Title, Author, and Affiliation Information}
-
-The title, author, and affiliation information should be centered
-above the body of your content. The title should be set in a 14-point
-bold sans-serif typeface with 18-point line spacing. The author and
-affiliation information should be set in a 10-point serif typeface
-with 12-point line spacing.
-
-The title should be appropriately capitalized. ``All caps'' is not
-appropriate. The following link provides assistance with appropriate
-capitalization:
-
-{\small\url{http://www.grammarbook.com/punctuation/capital.asp}}
-
-Affiliations should include your educational institution or employer's
-name, and a valid e-mail address.
-
-\section{The Basics: Section Headings}
-
-Section headings should be set in a 10-point bold sans-serif typeface
-and numbered - ``1'', ``2'', and so on. Subsection headings should be
-set in a 10-point bold sans-serif typeface and numbered - ``1.1'',
-``1.2'', and so on. Subsubsection headings should be set in a 10-point
-italic sans-serif typeface and numbered - ``1.2.1'', ``1.2.2'', and so
-on. A 10-point-tall space should separate a section heading and the
-next paragraph.
-
-\section{Abstract, Keywords, and CR Categories}
-
-Your content should begin with an abstract of about 150 words,
-describing the work and its contribution to the field.
-
-Authors of technical papers and technical briefs must also provide a
-set of user-generated keywords and a selection of CR categories, from
-the following link:
-
-{\small\url{http://www.acm.org/about/class/1998/}}
-
-Authors of other types of content may include CR categories and
-keywords at their discretion.
-
-\section{ACM Rights Management Text}
-
-You are required to leave a blank space at the base of the left column
-on the first page of your content for the ACM rights management
-text. This blank space will be one column wide, and one inch tall for
-all types of content except technical papers accepted to our annual
-(SIGGRAPH and SIGGRAPH Asia) conferences. In this case, the space must
-be 1.5 inches tall. (These technical papers are accepted as articles
-in the ACM ``Transactions on Graphics'' journal, and the rights
-management text is slightly different, and occupies more space.)
-
-\section{Figures and Tables and Captions}
-
-Figures and tables can span one or both columns. Captions for figures
-should be centered underneath the figure. Captions for tables should
-be centered above the table.
-
-\begin{table}[ht]
-  \centering
-  \caption{A simple table.}
-  \begin{tabular}{|r|l|}
-    \hline
-    7C0 & hexadecimal \\
-    3700 & octal \\ \cline{2-2}
-    11111000000 & binary \\
-    \hline \hline
-    1984 & decimal \\
-    \hline
-  \end{tabular}
-\end{table}
-  
-Please use 9-point bold serif type for the caption title, and 9-point
-serif type for the caption text (both on 10-point line spacing).
-
-\section{Citations and References}
-
-\subsection{Citations}
-
-The SIGGRAPH citation format is the ``author year''
-format~\cite{Pellacini:2005:LAH}. The year is separated from the
-author by a single space~\cite{yee:2000:ssa}. Two authors are
-separated by the word ``and''~\cite{parke:1996:CFA}. More than two
-authors are represented by the primary author and ``et al.''~\cite{levoy:2000:TDM}.
-
-Multiple citations at a single point in the content are separated by
-semicolons~\cite{levoy:2000:TDM,sako:2001:SSB}.
-
-When the last name of the cited author is part of the text, it may be
-omitted from the citation: ``\ldots as shown in Fedkiw et
-al.~\shortcite{fedkiw:2001:VSO}, the coefficient remains\ldots''
-
-\subsection{References}
-
-The reference list, or bibliography, must be unnumbered, alphabetized
-by the primary author's last name, followed by the year of publication
-and other identifying information (article title, journal title,
-volume, number, etc.). Author names are arranged as ``last name,
-initials.'' The page number, if any, is the last piece of information
-in the reference.
-
-The first line of each entry in the bibliography has no
-indentation. The second successive lines has a 2em
-indentation. 
-
-Please use 9-point serif type, with 10-point line spacing, for each
-entry in the bibliography, with a single blank line between each
-entry. 
-
-Journal, book, thesis, and conference proceedings titles are set in an
-italic serif type. {\sc Author names should be typeset in a ``Small
-Caps'' typeface.}
-
-\section{Third-Party Material}
-
-If you are using third-party material in your content - that is,
-material which you or your co-authors did not create - you need to
-clearly identify it as such in the material itself or in the 
-content's caption, as shown in Figure~\ref{fig:ferrari}.
+Bei der pixelweisen Darstellung in einem Array vom Typ Integer benutzt man Shiftoperationen und maskierrt die Speicherbereiche für den Zugriff auf die Subpixel. Das folgende Bild zeigt diese Struktur:
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=3.0in]{images/ferrari_laferrari}
-  \caption{Ferrari LaFerrari. Image courtesy Flickr user ``gfreeman23.''}
-  \label{fig:ferrari}
+  \includegraphics[width=2.0in]{images/BildPixelweiseInteger}
+  \caption{Farbbild in pixelweiser Darstellung im Integer Array. 'Skript Rehfeld - Digitale Bilder'}
+  \label{fig:Pixelweise Darstellung im Array.}
 \end{figure}
 
-ACM's policy on third-party material can be found at the following link:
+\begin{lstlisting}[language=Java]
+final int height = 480;
+final int width = 640;
+final int[] pic = new int[height * width ];
+SomeImageLoader.loadInto( pic );
+for( int y = 0; y < height; ++y ) {
+	for( int x = 0; x < width; ++x ) {
+	    int red = (pic[ y * width + x ] &
+ 	    0xff0000) >> 16;
+	    int green = (pic[ y * width + x ] &
+ 	    0xff00) >> 8;
+	    int blue = pic[ y * width + x ] & 0xff;
 
-{\small\url{http://www.acm.org/publications/third-party-material}}
+	    pic[y * width + x ] = 
+	    ((red & 0xff) << 16) | 
+	    ((green & 0xff) << 8) | 
+	    (blue & 0xff);
+	}
+}
+\end{lstlisting}
 
-\section{``Artistic Images'' and Copyright Transfer}
 
-ACM's rights management policy mandates that if copyright is
-transferred to ACM, and authors wish to retain copyright of one or
-more of their own images or figures in the content, they can identify
-them as ``artistic images'' by including the author's copyright notice
-in the image itself or in the caption.
 
-(Please note that only technical papers and technical briefs have
-copyright transfer as an option. All other forms of content have
-permission and licensing options, but not copyright transfer.)
+\section{Koordinatensystem}
+Bei allen beschriebenen Vorgängen ist zu beachten, dass das in der Computergrafik übliche Koordinatensystem mathematisch korrekt unten links beginnt und sich nach oben und rechts ausbreitet.
 
-\section{Author-Prepared Versions of Final Content}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=1.0in]{images/koordinatenSystemComputergrafik}
+  \caption{Bilder in der Computergrafik. 'Skript Rehfeld - Digitale Bilder'}
+  \label{fig:Koordinatenursprung unten links}
+\end{figure}
 
-ACM's rights management policy provides for author-prepared versions
-of final content to be made available on the author's personal or
-employer's web site for distribution.
+In der Bildverarbeitung hingegen beginnt es gemäß der Leserichtung der westlichen Kultur sowie der Richtung in CRT Monitoren, oben links und breitet sich nach rechts und unten aus.
 
-The author is responsible for creating the article-specific notice and
-making it part of the PDF. The following is an example of such a
-notice. Yours will have the year, publication, and article DOI
-information specific to your final content.
-
-\texttt{\small(c) 2009 ACM. This is the author's version of the work. It is posted here by permission of ACM for your personal use. Not for redistribution. The definitive version was published in ACM Transactions on Graphics 28(3), August 2009. http://doi.acm.org/10.1145/1576246.1531329.}
-
-\section{Application-Specific Notes}
-
-\subsection{\LaTeX}
-
-The ``acmsiggraph'' \LaTeX{} class will faithfully implement the formatting specifications found in this document. Please look at the ``template.tex'' file that accompanies the \LaTeX\ and \BibTeX\ class files, noting these points:
-\begin{itemize}
-\item In order to leave the correct amount of space clear for the rights management text, you must do two things: 
-\begin{enumerate}
-\item Use the proper parameter to the \cs{documentclass} command at the top of your source file: use ``tog'' for technical papers accepted to our annual events and published as TOG articles, and use ``conference'' for all other types of content. The parameter determines the amount of space left clear for the rights management text.
-\item Use the \cs{copyrightspace} command. It should be placed immediately before the first section of your paper.
-\end{enumerate}
-If you do not use any parameter to the \cs{documentclass} command, and use the \cs{copyrightspace} command, you'll end up with much more blank space than you want or need.
-
-\item Many authors like to have a large image - called a ``teaser'' image - after the title, author, and affiliation and before the body of the paper. There is a command - \cs{teaser} - which can be used to place such an image. (As has been done in this example document.) Under certain circumstances, the space left clear for the rights management text will move to the base of the right column on the first page. This is acceptable.
-\item Use the \cs{keywords} command to define your own keywords, and the \cs{keywordlist} command to prepare and print that block of text.
-\item Use the \cs{CRcatlist} environment and the \cs{CRcat} command to define the CR categories appropriate for your paper.
-\item There are also ``review'' and ``preprint'' variations of this document class, to be used for material submitted for review, and accepted content to be distributed as a ``preprint.'' These variations have special commands associated with them; see the ``template.tex'' file for more information.
-\end{itemize}
-
-\subsection{Microsoft Word}
-
-The ``acmsiggraph.docx'' file will faithfully implement the formatting
-specifications found in this document.
-
-An appropriately-placed column break is one way to leave the right
-amount of space for the rights management text.
-
-\section{Proceedings Production}
-
-Your final content will be checked and, if found acceptable for publication, will have the appropriate page header and footer information and ACM rights management text added to it. 
-
-If your final content is not acceptable for publication - for example, unembedded typefaces, missing required elements, or modification of the format - you will be directed to correct these issues and submit a new version of your final content as soon as possible.
-
-\section{Contact Information}
-
-If you have questions or suggestions regarding this document, please
-contact Stephen Spencer at ``spencer@cs.washington.edu''.
-
-\section*{Acknowledgements}
-
-To Robert, for all the bagels.
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=1.0in]{images/koordinatenSystemBildverarbeitung}
+  \caption{Bilder in der Bildverarbeitung. 'Skript Rehfeld - Digitale Bilder'}
+  \label{fig:Koordinatenursprung oben links}
+\end{figure}
 
 \bibliographystyle{acmsiggraph}
 \nocite{*}
