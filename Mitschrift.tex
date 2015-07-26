@@ -1,4 +1,35 @@
+\RequirePackage{filecontents}
+\begin{filecontents}{mybibliography.bib}
+@misc{rehfeld,
+	AUTHOR = "Stephan Rehfeld",
+	TITLE = "{Digitale Bilder}",
+	HOWPUBLISHED = "{\url{https://public.beuth-hochschule.de/~rehfeld/lehre/2015/ss/digitale-bilder.pdf}}",
+	YEAR = "{2015}"
+}
+
+@article{drepper2007every,
+  title={What every programmer should know about memory},
+  author={Drepper, Ulrich},
+  journal={Red Hat, Inc},
+  volume={11},
+  year={2007}
+}
+
+@online{big-o,
+  title={Know Thy Complexities!},
+  author={Eric Rowell},
+  howpublished={\url{http://bigocheatsheet.com/}},
+  year={2013}
+}
+
+\end{filecontents}	
+
 \documentclass[tog]{acmsiggraph}
+
+%%% Make the ``BibTeX'' word pretty...
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+   T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 % fürs  code highlighting
 \usepackage{listings}
@@ -12,6 +43,8 @@
 % für Umlaute
 % \usepackage[T1]{fontenc}\usepackage{lmodern}
 
+% für Verweise
+\usepackage{cite}
 
 % für korrekte mathematische Zeichen
 \usepackage{amsfonts}
@@ -21,6 +54,7 @@
 
 % deutsche anführungen
 \usepackage[autostyle]{csquotes}
+
 
 %%% Used by the ``review'' variation; the online ID will be printed on 
 %%% every page of the content.
@@ -55,6 +89,7 @@
 
 
 \begin{abstract}
+In dieser Mitschrift wird beschrieben, wie digitale Bilder im Rechner dargestellt werden.
 In der Realität werden Bilder durch reflektiertes Licht erzeugt.
 Das führt zu den folgenden Fragestellungen:
 
@@ -67,54 +102,73 @@ Hier soll ein Weg hergeleitet werden, Bilder in einer Form zu abstrahieren, mit 
 
 \section{Was ist ein Bild?}
 
+Bilder sind stetig. Stetige Bilder sind allerdings kaum im Computer darstellbar, da dieser mit diskreten Werten arbeitet. Also müssen wir die stetigen Bilder in diskrete Bilder umwandeln.
+
 \subsection{Formal Mathematisch}
 Am besten dafür eignet sich die folgende stetige mathematische Funktion, die die Menge der Koordinaten R auf die Menge der Farben V abbildet:
-\begin{equation}I(x,y): R \rightarrow V\end{equation}
-\begin{equation}R\subset \mathbb{R}^2\end{equation}
-\begin{equation}V = \mathbb{R}^+ \: Graustufenbild\end{equation}
-\begin{equation}V = \left (\mathbb{R}^+  \right )^3 \: Farbbild\end{equation}
+\begin{equation}\label{eq:eins}I(x,y): R \rightarrow V\end{equation}
+
+Die Funktion (\ref{eq:eins}) bildet die Menge der Koordinaten auf die Menge der Farben ab.
+
+\begin{equation}\label{eq:two}R\subset \mathbb{R}^2\end{equation}
+
+(\ref{eq:two}) besagt, dass die Farben R eine Teilmenge des  kartesischen Produktes  $\mathbb{R}$ x $\mathbb{R}$
+
+\begin{equation}\label{eq:three}V = \mathbb{R}^+ \: Graustufenbild\end{equation}
+
+(\ref{eq:three}) Der Farbraum für ein Fraustufenbild entspricht den positiven reellen Zahlen.
+
+\begin{equation}\label{eq:four}V = \left (\mathbb{R}^+  \right )^3 \: Farbbild\end{equation}
+
+(\ref{eq:four}) Für eine Farbbild wird der Farbraum dem dreidimensionalen positiven Raum zugewiesen.
 
 
-Diese Art der Modellierung ist unnötig genau. Durch die biologischen und psychologischen Einschränkungen, denen die menschliche Wahrnehmung unterliegt, findet eine sehr viel gröbere Abtastung statt. Diese kann man zur Vereinfachung des Modells nutzen.
+Diese Art der Modellierung ist unnötig genau. Durch optische Ungenauigkeiten, denen die menschliche Wahrnehmung unterliegt, findet eine sehr viel gröbere Abtastung statt. Diese kann man zur Vereinfachung des Modells nutzen.
 
 \subsection{Wahrnehmung bei Menschen}
-Je weiter ein Objekt entfernt ist, um so kleiner ist die Abbildung auf die Stäbchen und Zapfen unserer Netzhaut. Da das Licht von mehreren Punkten des gesehenen Objekts auf einen Punkt auf der Netzhaut projiziert wird. Somit hat das menschliche Auge keine Chance mehr die Unterschiede zwischen nahegelegenen Punkten wahrzunehmen.
+Je weiter ein Objekt entfernt ist, um so kleiner ist die Abbildung auf die Stäbchen und Zapfen unserer Netzhaut, da das Licht von mehreren Punkten des gesehenen Objekts auf einen Punkt auf der Netzhaut projiziert wird. Ist ein Objekt sehr nahe, wie bei \ref{fig:Objekt nah am Auge} wird es deutlich auf den Zellen der Netzhaut abgebildet.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=.75in]{images/AugeObjektNah}
   \includegraphics[width=0.5in]{images/SinneszelleObjektNah}
   \includegraphics[width=0.5in]{images/AbbildungAufSinneszelleObjektNah}
-  \caption{Objekt nah am Auge. \\'Skript Rehfeld - Digitale Bilder'}
+  \caption{Objekt nah am Auge.}
   \label{fig:Objekt nah am Auge}
+  \cite{rehfeld}
 \end{figure}
+
+ Somit hat das menschliche Auge, wie bei \ref{fig:Objekt fern vom Auge} keine Chance mehr die Unterschiede zwischen nahegelegenen Punkten wahrzunehmen.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=1.5in]{images/AugeObjektFern}
   \includegraphics[width=0.5in]{images/SinneszelleObjektFern}
   \includegraphics[width=0.55in]{images/AbbildungAufSinneszelleObjektFern}
-  \caption{Objekt fern vom Auge. \\'Skript Rehfeld - Digitale Bilder'}
+  \caption{Objekt fern vom Auge}
   \label{fig:Objekt fern vom Auge}
+  \cite{rehfeld}
 \end{figure}
 
-Auch beim Druck findet dieses Begebenheit Anwendung, beispielsweise druckt der Druckkopf ganz kleine Muster, um aus Gelb und Magenta Rot oder Orange zu mischen.
+Auch beim Druck findet dieses Begebenheit Anwendung, beispielsweise druckt der Druckkopf ganz kleine Muster, um aus Gelb und Magenta Rot oder Orange zu mischen, wie auf Abbildung \ref{fig:Aus Grundfarben wird neue eine Farbe} zu sehen ist.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.5in]{images/gelbMagentaMusterGrob}
   \includegraphics[width=0.5in]{images/gelbMagentaMusterFeiner}
   \includegraphics[width=0.5in]{images/gelbMagentaMusterFein}
-  \caption{Farben mischen aus CMYK. \\'Skript Rehfeld - Digitale Bilder'}
+  \caption{Farben mischen aus CMYK.}
   \label{fig:Aus Grundfarben wird neue eine Farbe}
+  \cite{rehfeld}
 \end{figure}
 
 Ähnlich verhält es sich bei Bildschirmen, denn die mangelnde örtliche Auflösung führt zum Eindruck eines stetigen Bildes, wobei die Signale des Bildschirms eigentlich diskret sind.
 
 \section{Umsetzung für Computer}
+In diesem Abschnitt wird beschrieben, wie die Umsetzung der Bilder in er Programmierung aussehen.
 Naheliegend ist es, ein Bildgitter durch einen zweidimensionalen \textit{byte} Array pro Farbkanal darzustellen.
 Nun kann jeder Subpixel bearbeitet werden, indem wir mit zwei geschachtelten For-Schleifen über die Koordinaten iterieren und dort die RGB-Farbwerte setzen.
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[caption=Bildgitter aus zweidimensionalen Byte Array pro Farbkanal]
 final byte[][]pic = new byte[640][480][3];
 
 for (int x = 0; x < width; ++x){
@@ -134,13 +188,13 @@ DRAM $\rightarrow$ ist \textit{günstig} aber \textit{langsam}
 Auf der CPU befinden sich schnelle kleine SRAM basierte Speicher die als Caches benutzt werden. Cachecontroller versuchen zu errechnen auf welche Speicheradressen als nächstes zugegriffen wird und laden die Daten präventiv ins schnellere Cache. Dadurch muss die CPU seltener warten bis Daten aus dem langsamen Hauptspeicher auf DRAM Basis geladen sind.
 Modernen CPUs haben üblicherweise drei Cache-Level mit denen man versucht die \textit{Cache Misses} zu minimieren.
 
-{\small\url{http://lwn.net/Articles/250967/}}
+\cite{drepper2007every}
 
 \subsection{Graustufenbild}
 Um \textit{Cacheprediction} besser aus zu nutzen ist es also sinnvoll, Daten hintereinander abzulegen. Der folgende Code ist ein Beispiel für ein Graustufenbild als eindimensionales Array.
 
-\begin{lstlisting}[language=Java]
-final byte[][] pic = new byte [640 * 480];
+\begin{lstlisting}[caption=Graustufenbild]
+final byte[][] pic = new byte [width * height];
 
 for (int x = 0; x < width; ++x) {
   for (int y = 0; y < height; ++y) {
@@ -150,9 +204,17 @@ for (int x = 0; x < width; ++x) {
 \end{lstlisting}
 
 \subsection{Farbbild mit separierten Kanälen}
-Ähnlich kann man ein Farbbild modellieren, indem man die Farbkanäle einen nach dem anderen ablegt.
+Ähnlich kann man ein Farbbild modellieren, indem man die Farbkanäle einen nach dem anderen,wie in Abbildung XXX ablegt.
 
-\begin{lstlisting}[language=Java]
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=2.0in]{images/BildKomponentenweise}
+  \caption{Farbbild mit separierten Farbkanälen.}
+  \label{fig:Separierte Farbkanaele}
+  \cite{rehfeld}
+\end{figure}
+
+\begin{lstlisting}[caption=Farbbild mit separierten Kanälen]
 final byte[][] pic = new byte [640 * 480 * 3];
 SomeImageLoader.loadInto(pic);
 for (int x = 0; x < width; ++x) {
@@ -172,7 +234,7 @@ for (int x = 0; x < width; ++x) {
 \subsection{Farbbild Pixelweise}
 Eine weitere Möglichkeit besteht darin, jeden Pixel durch 3 aufeinander folgende Subpixel darzustellen.
 
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[caption=Farbbild Pixelweise]
 final byte[][] pic = new byte [640 * 480 * 3];
 
 for (int x = 0; x < width; ++x){
@@ -184,14 +246,12 @@ for (int x = 0; x < width; ++x){
   }
 \end{lstlisting}
 
-\subsection{Farbbild Pixelweise als integer}
-Die häufigste Darstellung ist allerdings die pixelweise Darstellung in einem Array vom Typ Integer, da sie mehrere Vorteile in sich vereint. Die Performanz wird einerseits durch \textit{Data structure alignment} auf Speicherseite und andererseits durch Ausnutzen hochperformanter Shiftoperationen für Subpixelzugriffe gewährleistet. Zudem erhält man für Menschen verhältnismäßig gut interpretierbare Werte.
-
-{\small\url{http://en.wikipedia.org/wiki/Data_structure_alignment}}
+\subsection{Farbbild Pixelweise als Integer}
+Die häufigste Darstellung ist allerdings die pixelweise Darstellung in einem Array vom Typ Integer, da sie mehrere Vorteile in sich vereint. Die Performanz wird einerseits durch \textit{Data structure alignment} auf Speicherseite und andererseits durch Ausnutzen hochperformanter Shiftoperationen für Subpixelzugriffe gewährleistet. Zudem erhält man für Menschen verhältnismäßig gut interpretierbare Werte. \cite{big-o}
 
 Der Zugriff auf Subpixel findet mittels Bitmasken und Shiftoperationen statt.
 
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[caption=Farbbild Pixelweise als Integer]
 final int height = 480;
 final int width = 640;
 final int[] pic = new int[height * width ];
@@ -215,8 +275,9 @@ for(int y = 0; y < height; ++y ) {
 \begin{figure}[ht]
   \centering
   \includegraphics[width=2.0in]{images/BildPixelweiseInteger}
-  \caption{Farbbild in pixelweiser Darstellung im Integer Array. 'Skript Rehfeld - Digitale Bilder'}
+  \caption{Farbbild in pixelweiser Darstellung im Integer Array.}
   \label{fig:Pixelweise Darstellung im Array.}
+  \cite{rehfeld}
 \end{figure}
 
 
@@ -226,22 +287,24 @@ Bei allen beschriebenen Vorgängen ist zu beachten, dass das in der Computergraf
 \begin{figure}[ht]
   \centering
   \includegraphics[width=1.0in]{images/koordinatenSystemComputergrafik}
-  \caption{Bilder in der Computergrafik. 'Skript Rehfeld - Digitale Bilder'}
+  \caption{Bilder in der Computergrafik.}
   \label{fig:Koordinatenursprung unten links}
+  \cite{rehfeld}
 \end{figure}
 
 In der Bildverarbeitung hingegen beginnt es gemäß der Leserichtung der westlichen Kultur sowie der Richtung in CRT Monitoren, oben links und breitet sich nach rechts und unten aus.
-
+ 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=1.0in]{images/koordinatenSystemBildverarbeitung}
-  \caption{Bilder in der Bildverarbeitung. 'Skript Rehfeld - Digitale Bilder'}
+  \caption{Bilder in der Bildverarbeitung.}
   \label{fig:Koordinatenursprung oben links}
+  \cite{rehfeld}
 \end{figure}
 
 
 \bibliographystyle{acmsiggraph}
 \nocite{*}
-\bibliography{template}
+\bibliography{mybibliography}
 \end{document}
 
